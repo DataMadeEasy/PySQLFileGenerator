@@ -1,0 +1,4 @@
+sqlqueries = {
+    'test1':"select concat ('FY', to_char(f.forecasted_timestamp, 'YY')) Fiscal_yr, to_char(f.forecasted_timestamp, 'MON') Fiscal_mth, concat ('Day_', to_char(f.forecasted_timestamp, 'DD')) Fiscal_day, f.zipcode zip, min(f.temp_avg) low, max(f.temp_avg) high, max(f.wind_speed) wind, max(f.humidity) humidity from forecast f where to_char(forecast_timestamp, 'YYYY-MM-DD HH24') = (select max(to_char(forecast_timestamp, 'YYYY-MM-DD HH24')) from forecast) group by to_char(f.forecasted_timestamp, 'YY'), to_char(f.forecasted_timestamp, 'MON'), to_char(f.forecasted_timestamp, 'DD'), f.zipcode;",
+    'test2':"Select * from observations"
+}

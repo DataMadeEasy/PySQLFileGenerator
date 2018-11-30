@@ -37,11 +37,10 @@ def CreateSQLResultFile():
         print fields
         
         
-        f = open("/home/tlrausch33/Documents/SQLQueries/"+strQueryName+".csv", "x")
         
         
         c = csv.writer(open("/home/tlrausch33/Documents/SQLQueries/"+strQueryName+".csv","wb"), lineterminator="\n")
-        c.writerows(fields)
+        c.writerow([i[0] for i in cur.description])
         c.writerows(dsresult)  
 
 

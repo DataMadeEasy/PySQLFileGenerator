@@ -1,3 +1,4 @@
-from core import CreateSQLResultFile
+from core import CreateSQLResultFile, EmailFiles
 
 CreateSQLResultFile()
+EmailFiles()

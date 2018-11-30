@@ -3,9 +3,14 @@ Created on Nov 29, 2018
 
 @author: tlrausch33
 '''
-import credentials, sqlqueries
-import json, time, threading,urllib2, urllib, datetime
-import psycopg2, csv
+import credentials, sqlqueries, emailconfig
+import json, time, threading,urllib2, urllib, datetime, psycopg2, csv, smtplib, os.path
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+import glob
+
 
 def CreateSQLResultFile():
     
@@ -33,4 +38,66 @@ def CreateSQLResultFile():
 
 
 
+def EmailFiles():
+    
+    
+ 
 
+    ##Pull Email Credenitals
+    user= credentials.EmailCredentials['user']
+    password = credentials.EmailCredentials['password']
+    
+    
+    #Pull Email configuration
+    smtpserver = smtplib.SMTP(emailconfig.smtpinfo['server'],emailconfig.smtpinfo['port'])
+    
+    
+    
+    filelocation = emailconfig.attachmentlocation
+    filelist = glob.glob(filelocation + '*')
+    print filelist
+  
+    strdistributionlist =';'.join(emailconfig.distributionlist)
+    
+    
+    msg = MIMEMultipart()
+    msg['From'] = credentials.EmailCredentials['user']
+    msg['To'] = strdistributionlist 
+    msg['Subject'] = emailconfig.emailtemplate['subject']
+
+    message = emailconfig.emailtemplate['message']
+    msg.attach(MIMEText(message, 'plain'))
+    
+    for file in filelist:
+        filename = os.path.basename(file)
+        attachment = open(file, "rb")
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload((attachment).read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    
+        msg.attach(part)
+
+    
+    
+    
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(user, password)
+    
+    #header = 'To:' + sendto + '\n' + 'From: ' + user + '\n' + 'Subject:' + emailconfig.emailtemplate['subject'] + ' \n' + 'MIME-Version: 1.0' +' \n' + 'Content-Type: multipart/mixed; boundary=%s' + ' \n' + '--%s' % (marker, marker)
+    #print header
+    #msgbody = header + '\n' + emailconfig.emailtemplate['message']
+    #smtpserver.sendmail(user, sendto, msgbody)
+    
+    
+    text = msg.as_string()
+    smtpserver.sendmail(user, emailconfig.distributionlist, text)
+    smtpserver.quit()
+    
+    
+    
+    
+    print 'done!'
+    smtpserver.close()

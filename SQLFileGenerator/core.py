@@ -19,23 +19,11 @@ def CreateSQLResultFile():
 
     
     for strQueryName, strQuery in sqlqueries.sqlqueries.items():    
-        
-        fields =[]    
+           
         
         cur = dbconnection.cursor()
         cur.execute(strQuery)
         dsresult = cur.fetchall()
-        print type(dsresult)
-        
-        d = cur.description
-        for dd in d:    # iterate over description
-          fields.append(dd[0])
-
-        
-        
-        #strFields = [format % tuple(fields)]
-        print fields
-        
         
         
         

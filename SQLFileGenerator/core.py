@@ -20,8 +20,7 @@ def CreateSQLResultFile():
 
     except:
         print "Unable to connect to db"
-
-
+        print credentials.AWSDbCredentials['hostname'] + credentials.AWSDbCredentials['username']+ credentials.AWSDbCredentials['password'] + credentials.AWSDbCredentials['database']
     
     for strQueryName, strQuery in sqlqueries.sqlqueries.items():    
            
@@ -68,9 +67,9 @@ def EmailFiles():
     message = emailconfig.emailtemplate['message']
     msg.attach(MIMEText(message, 'plain'))
     
-    for file in filelist:
-        filename = os.path.basename(file)
-        attachment = open(file, "rb")
+    for strfile in filelist:
+        filename = os.path.basename(strfile)
+        attachment = open(strfile, "rb")
         part = MIMEBase('application', 'octet-stream')
         part.set_payload((attachment).read())
         encoders.encode_base64(part)

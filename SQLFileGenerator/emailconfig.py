@@ -6,9 +6,9 @@ smtpinfo = {
 distributionlist = {
     'tlrausch33@gmail.com',
     'info@thomaslrausch.com',
-    'thomas.rausch@parc-consulting.com'
-    #'eric.wagner@parc-consulting.com',
-    #'neal.cawi@parc-consulting.com'
+    'thomas.rausch@parc-consulting.com',
+    'eric.wagner@parc-consulting.com',
+    'neal.cawi@parc-consulting.com'
 }
 
 emailtemplate = {
